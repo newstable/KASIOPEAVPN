@@ -44,7 +44,7 @@ type VPNState struct {
 }
 
 var (
-	configfile = flag.String("config", "/etc/lcvpn.conf", "Config file")
+	configfile = flag.String("config", "./lcvpn.conf", "Config file")
 	local      = flag.String("local", "",
 		"ID from \"remotes\" which idtenify this host [default: autodetect]")
 	config atomic.Value
@@ -119,6 +119,8 @@ func readConfig() error {
 	} else {
 		ips := getLocalIPsMap()
 		for name, r := range newConfig.Remote {
+			fmt.Println(r.ExtIP)
+			fmt.Println(ips)
 			if _, ok := ips[r.ExtIP]; ok {
 				newConfig.Main.local = fmt.Sprintf("%s/%d", r.LocIP, newConfig.Main.NetCIDR)
 				log.Printf("%s (%s) is detected as local ip\n", newConfig.Main.local, name)
