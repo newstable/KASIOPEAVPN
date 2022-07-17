@@ -45,9 +45,8 @@ type VPNState struct {
 
 var (
 	configfile = flag.String("config", "./lcvpn.conf", "Config file")
-	local      = flag.String("local", "",
-		"ID from \"remotes\" which idtenify this host [default: autodetect]")
-	config atomic.Value
+	local      = flag.String("local", "", "ID from \"remotes\" which idtenify this host [default: autodetect]")
+	config     atomic.Value
 )
 
 func getLocalIPsMap() map[string]bool {
@@ -130,6 +129,7 @@ func readConfig() error {
 			}
 		}
 		if "" == newConfig.Main.local {
+			log.Println(newConfig.Main.local)
 			return errors.New("Local ip can't be detected")
 		}
 	}
