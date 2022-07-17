@@ -32,7 +32,6 @@ import "syscall"
 var reusePort = syscall.SO_REUSEPORT
 */
 
-
 // getSockaddr parses protocol and address and returns implementor syscall.Sockaddr: syscall.SockaddrInet4 or syscall.SockaddrInet6.
 func getSockaddr(proto, addr string) (sa syscall.Sockaddr, soType int, mode int, err error) {
 	var (

@@ -11,7 +11,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/kanocz/lcvpn/reuseport"
+	encryption "github.com/nikola43/kasiopeavpn/encryption"
+	packet "github.com/nikola43/kasiopeavpn/packet"
+	"github.com/nikola43/kasiopeavpn/reuseport"
 	"github.com/songgao/water"
 	"golang.org/x/net/ipv4"
 )
@@ -37,7 +39,7 @@ func rcvrThread(proto string, port int, iface *water.Interface) {
 	}
 
 	encrypted := make([]byte, BUFFERSIZE)
-	var decrypted IPPacket = make([]byte, BUFFERSIZE)
+	var decrypted packet.IPPacket = make([]byte, BUFFERSIZE)
 
 	for {
 		n, _, err := conn.ReadFrom(encrypted)
@@ -59,10 +61,10 @@ func rcvrThread(proto string, port int, iface *water.Interface) {
 			continue
 		}
 
-		size, mainErr := DecryptV4Chk(conf.Main.main, encrypted[:n], decrypted)
+		size, mainErr := encryption.DecryptV4Chk(conf.Main.main, encrypted[:n], decrypted)
 		if nil != mainErr {
 			if nil != conf.Main.alt {
-				size, err = DecryptV4Chk(conf.Main.alt, encrypted[:n], decrypted)
+				size, err = encryption.DecryptV4Chk(conf.Main.alt, encrypted[:n], decrypted)
 				if nil != err {
 					log.Println("Corrupted package: ", mainErr, " / ", err)
 					continue
@@ -89,7 +91,7 @@ func sndrThread(conn *net.UDPConn, iface *water.Interface) {
 		log.Fatalln("Unable to get rand data:", err)
 	}
 
-	var packet IPPacket = make([]byte, BUFFERSIZE)
+	var packet packet.IPPacket = make([]byte, BUFFERSIZE)
 	var encrypted = make([]byte, BUFFERSIZE)
 
 	for {
@@ -190,14 +192,14 @@ func main() {
 
 	routeReload := make(chan bool, 1)
 
-	initConfig(routeReload)
+	InitConfig(routeReload)
 
 	conf := config.Load().(VPNState)
 
-	iface := ifaceSetup(conf.Main.local)
+	iface := IfaceSetup(conf.Main.local)
 
 	// start routes changes in config monitoring
-	go routesThread(iface.Name(), routeReload)
+	go RoutesThread(iface.Name(), routeReload)
 
 	log.Println("Interface parameters configured")
 

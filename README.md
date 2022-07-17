@@ -20,7 +20,7 @@ So, LCVPN is
 You need golang (at least 1.5) installed and configured:
 
 ```sh
-$ go get -u github.com/kanocz/lcvpn
+$ go get -u github.com/nikola43/kasiopeavpn
 ```
 
 if you have config in /etc/lcvpn.conf

@@ -16,7 +16,7 @@ const (
 )
 
 // ifaceSetup returns new interface OR PANIC!
-func ifaceSetup(localCIDR string) *water.Interface {
+func IfaceSetup(localCIDR string) *water.Interface {
 
 	iface, err := water.New(water.Config{DeviceType: water.TUN})
 
@@ -34,7 +34,7 @@ func ifaceSetup(localCIDR string) *water.Interface {
 	return iface
 }
 
-func routesThread(ifaceName string, refresh chan bool) {
+func RoutesThread(ifaceName string, refresh chan bool) {
 	currentRoutes := map[string]bool{}
 	for {
 		<-refresh

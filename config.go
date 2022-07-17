@@ -180,7 +180,7 @@ func readConfig() error {
 	return nil
 }
 
-func initConfig(routeReload chan bool) {
+func InitConfig(routeReload chan bool) {
 	err := readConfig()
 	if nil != err {
 		log.Fatalln("Error loading config:", err)

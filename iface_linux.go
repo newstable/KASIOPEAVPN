@@ -7,8 +7,8 @@ import (
 	"log"
 	"net"
 
-	"github.com/kanocz/lcvpn/netlink"
 	"github.com/milosgajdos/tenus"
+	"github.com/nikola43/kasiopeavpn/netlink"
 	"github.com/songgao/water"
 )
 
@@ -18,7 +18,7 @@ const (
 )
 
 // ifaceSetup returns new interface OR PANIC!
-func ifaceSetup(localCIDR string) *water.Interface {
+func IfaceSetup(localCIDR string) *water.Interface {
 
 	lIP, lNet, err := net.ParseCIDR(localCIDR)
 	if nil != err {
@@ -58,7 +58,7 @@ func ifaceSetup(localCIDR string) *water.Interface {
 	return iface
 }
 
-func routesThread(ifaceName string, refresh chan bool) {
+func RoutesThread(ifaceName string, refresh chan bool) {
 	currentRoutes := map[string]bool{}
 	for {
 		<-refresh

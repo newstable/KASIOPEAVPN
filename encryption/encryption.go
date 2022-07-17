@@ -3,7 +3,7 @@ package encryption
 import (
 	"errors"
 
-	"../packet"
+	packet "github.com/nikola43/kasiopeavpn/packet"
 )
 
 // PacketEncrypter represents wrapper for encryption alg
