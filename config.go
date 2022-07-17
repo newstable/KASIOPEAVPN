@@ -12,6 +12,7 @@ import (
 	"sync/atomic"
 	"syscall"
 
+	encryption "github.com/nikola43/kasiopeavpn/encryption"
 	"gopkg.in/gcfg.v1"
 )
 
@@ -29,8 +30,8 @@ type VPNState struct {
 
 		// filled by readConfig
 		bcastIP [4]byte
-		main    PacketEncrypter
-		alt     PacketEncrypter
+		main    encryption.PacketEncrypter
+		alt     encryption.PacketEncrypter
 		local   string
 	}
 	Remote map[string]*struct {
@@ -83,7 +84,7 @@ func readConfig() error {
 	if "" == newConfig.Main.Encryption {
 		return errors.New("main.encryption is empty")
 	}
-	newEFunc, ok := registeredEncrypters[strings.ToLower(newConfig.Main.Encryption)]
+	newEFunc, ok := encryption.RegisteredEncrypters[strings.ToLower(newConfig.Main.Encryption)]
 	if !ok {
 		return fmt.Errorf(
 			"main.encryption type \"%s\" is unknown",
