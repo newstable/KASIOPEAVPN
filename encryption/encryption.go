@@ -24,7 +24,7 @@ type PacketEncrypter interface {
 type newEncrypterFunc func(string) (PacketEncrypter, error)
 
 var (
-	registeredEncrypters = make(map[string]newEncrypterFunc)
+	RegisteredEncrypters = make(map[string]newEncrypterFunc)
 
 	// predefined errors
 	ePacketSmall       = errors.New("Packet too small")

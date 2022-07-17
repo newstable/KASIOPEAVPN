@@ -99,5 +99,5 @@ func (a *aescbchmac) IVLen() int {
 }
 
 func init() {
-	registeredEncrypters["aescbchmac"] = newAesCbcHmac
+	RegisteredEncrypters["aescbchmac"] = newAesCbcHmac
 }

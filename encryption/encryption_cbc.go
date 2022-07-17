@@ -77,5 +77,5 @@ func (a *aescbc) IVLen() int {
 }
 
 func init() {
-	registeredEncrypters["aescbc"] = newAesCbc
+	RegisteredEncrypters["aescbc"] = newAesCbc
 }

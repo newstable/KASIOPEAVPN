@@ -39,5 +39,5 @@ func (a *encnone) IVLen() int {
 }
 
 func init() {
-	registeredEncrypters["none"] = newEncNone
+	RegisteredEncrypters["none"] = newEncNone
 }
