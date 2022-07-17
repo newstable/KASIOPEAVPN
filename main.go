@@ -122,8 +122,11 @@ func sndrThread(conn *net.UDPConn, iface *water.Interface) {
 		}
 
 		// very ugly and useful only for a limited numbers of routes!
+		log.Println("wanted DstV4", wanted)
+		var ip net.IP
 		if !wanted {
-			ip := packet.DstV4()
+			ip = packet.DstV4()
+			log.Println("ip", ip)
 			for n, s := range c.routes {
 				if n.Contains(ip) {
 					addr = s
@@ -133,8 +136,9 @@ func sndrThread(conn *net.UDPConn, iface *water.Interface) {
 				}
 			}
 		}
-
+		log.Println("wanted", wanted)
 		if wanted {
+			log.Println("ip wanted", ip)
 			// new len contatins also 2byte original size
 			clen := c.Main.main.AdjustInputSize(plen)
 
@@ -153,6 +157,7 @@ func sndrThread(conn *net.UDPConn, iface *water.Interface) {
 				if n != tsize {
 					log.Println("Only ", n, " bytes of ", tsize, " sent")
 				}
+				log.Println("n WriteToUDP", n)
 			} else {
 				// multicast or broadcast
 				for _, addr := range c.remotes {
@@ -163,6 +168,7 @@ func sndrThread(conn *net.UDPConn, iface *water.Interface) {
 					if n != tsize {
 						log.Println("Only ", n, " bytes of ", tsize, " sent")
 					}
+					log.Println("n broadcast", n)
 				}
 			}
 		} else {
